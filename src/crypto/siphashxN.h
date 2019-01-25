@@ -76,7 +76,7 @@ void siphash24x2(const siphash_keys *keys, const uint64_t *indices, uint64_t *ha
   SIPROUNDXN; SIPROUNDXN;
   v0 = XOR (v0, mi);
   
-  v2 = XOR (v2, _mm_set1_epi64x(0xffLL));
+  v2 = XOR (v2, vec_splats(0xffLL));
   SIPROUNDXN; SIPROUNDXN; SIPROUNDXN; SIPROUNDXN;
   mi = XOR(XOR(v0,v1),XOR(v2,v3));
   
