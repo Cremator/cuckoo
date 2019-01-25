@@ -7,10 +7,10 @@
 
 #define ADD(a, b) vec_add2sd(a, b)
 #define XOR(a, b) vec_bitxor1q(a, b)
-#define ROT13(x) vec_bitor1q(vec_shiftimmediateleft2sd(x,13),vec_shiftleftimmediate2sd(x,51))
+#define ROT13(x) vec_bitor1q(vec_shiftrightimmediate2sd(x,13),vec_shiftleftimmediate2sd(x,51))
 #define ROT16(x) vec_permuteupper4sh(vec_permutelower4sh(x, _MM_SHUFFLE(2,1,0,3)), _MM_SHUFFLE(2,1,0,3))
-#define ROT17(x) vec_bitor1q(vec_shiftimmediateleft2sd(x,17),vec_shiftleftimmediate2sd(x,47))
-#define ROT21(x) vec_bitor1q(vec_shiftimmediateleft2sd(x,21),vec_shiftleftimmediate2sd(x,43))
+#define ROT17(x) vec_bitor1q(vec_shiftrightimmediate2sd(x,17),vec_shiftleftimmediate2sd(x,47))
+#define ROT21(x) vec_bitor1q(vec_shiftrightimmediate2sd(x,21),vec_shiftleftimmediate2sd(x,43))
 #define ROT32(x) vec_permute4sw(x, _MM_SHUFFLE(2,3,0,1))
 typedef vector unsigned int vtype32;
 typedef vector unsigned long vtype64;
