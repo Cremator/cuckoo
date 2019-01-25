@@ -1418,6 +1418,23 @@ VECLIB_INLINE __m128i vec_shiftrightimmediate4sw (__m128i v, intlit8 count)
   }
 }
 
+/* Shift 2 64-bit ints right logical immediate */
+VECLIB_INLINE __m128i vec_shiftrightimmediate2sd (__m128i v, intlit8 count)
+{
+  if ((unsigned long) count >= 64)
+  {
+    /* SSE2 shifts >= element_size or < 0 produce 0; Altivec/MMX shifts by count%element_size. */
+    return (__m128i) vec_splats (0);
+  } else if (count == 0) {
+    return v;
+  } else {
+    /* The PowerPC Architecture says all shift count fields must contain the same shift count. */
+    __m128i_union replicated_count;
+    replicated_count.as_vector_signed_int = vec_splats ((int) count);
+    return (__m128i) vec_sr ((vector signed int) v, replicated_count.as_vector_unsigned_int);
+  }
+}
+
 /* Shift 128-bits right logical immediate by bytes */
 VECLIB_INLINE __m128i vec_shiftrightbytes1q (__m128i v, intlit8 bytecount)
 {
