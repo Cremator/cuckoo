@@ -66,17 +66,17 @@
 // 2-way sipHash-2-4 specialized to precomputed key and 8 byte nonces
 void siphash24x2(const siphash_keys *keys, const uint64_t *indices, uint64_t *hashes) {
   __m128i v0, v1, v2, v3, mi;
-  v0 = vec_splats(keys->k0);
-  v1 = vec_splats(keys->k1);
-  v2 = vec_splats(keys->k2);
-  v3 = vec_splats(keys->k3);
-  mi = vec_splats((__m128i *)indices);
+  v0 = vec_splat_u32(keys->k0);
+  v1 = vec_splat_u32(keys->k1);
+  v2 = vec_splat_u32(keys->k2);
+  v3 = vec_splat_u32(keys->k3);
+  mi = vec_splat_u32((__m128i *)indices);
 	
   v3 = XOR (v3, mi);
   SIPROUNDXN; SIPROUNDXN;
   v0 = XOR (v0, mi);
   
-  v2 = XOR (v2, vec_splats(0xffLL));
+  v2 = XOR (v2, vec_splat_u32(0xffLL));
   SIPROUNDXN; SIPROUNDXN; SIPROUNDXN; SIPROUNDXN;
   mi = XOR(XOR(v0,v1),XOR(v2,v3));
   
@@ -86,10 +86,10 @@ void siphash24x2(const siphash_keys *keys, const uint64_t *indices, uint64_t *ha
 // 4-way sipHash-2-4 specialized to precomputed key and 8 byte nonces
 void siphash24x4(const siphash_keys *keys, const uint64_t *indices, uint64_t *hashes) {
   __m128i v0, v1, v2, v3, mi, v4, v5, v6, v7, m2;
-  v4 = v0 = vec_splats(keys->k0);
-  v5 = v1 = vec_splats(keys->k1);
-  v6 = v2 = vec_splats(keys->k2);
-  v7 = v3 = vec_splats(keys->k3);
+  v4 = v0 = vec_splat_u32(keys->k0);
+  v5 = v1 = vec_splat_u32(keys->k1);
+  v6 = v2 = vec_splat_u32(keys->k2);
+  v7 = v3 = vec_splat_u32(keys->k3);
 
   mi = vec_load1q((__m128i *)indices);
   m2 = vec_load1q((__m128i *)(indices + 2));
@@ -100,8 +100,8 @@ void siphash24x4(const siphash_keys *keys, const uint64_t *indices, uint64_t *ha
   v0 = XOR (v0, mi);
   v4 = XOR (v4, m2);
 
-  v2 = XOR (v2, vec_splats(0xffLL));
-  v6 = XOR (v6, vec_splats(0xffLL));
+  v2 = XOR (v2, vec_splat_u32(0xffLL));
+  v6 = XOR (v6, vec_splat_u32(0xffLL));
   SIPROUNDX2N; SIPROUNDX2N; SIPROUNDX2N; SIPROUNDX2N;
   mi = XOR(XOR(v0,v1),XOR(v2,v3));
   m2 = XOR(XOR(v4,v5),XOR(v6,v7));
